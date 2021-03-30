@@ -164,6 +164,11 @@ process groups are specified by supplying
 as negative, otherwise
 .Fa arg
 is interpreted as a process ID.
+.It Dv F_GETPATH
+Get the filesystem path associated with
+.Fa fd .
+At most MAXPATHLEN bytes will be written to the buffer provided in
+.Fa arg .
 .El
 .Pp
 The flags for the
@@ -614,3 +619,8 @@ and
 .Dv F_DUP2FD_CLOEXEC
 constants first appeared in
 .Dx 3.5 .
+.Pp
+The
+.Dv F_GETPATH
+constant was introduced in
+.Dx 5.9 .
