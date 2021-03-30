@@ -884,12 +884,11 @@ kern_fcntl(int fd, int cmd, union fcntl_dat *dat, struct ucred *cred)
 
 	case F_GETPATH:
 		if (fp->f_type != DTYPE_VNODE) {
-			kprintf("kern_fcntl() not vnode\n");
 			error = EBADF;
 			break;
 		}
-		vp = (struct vnode *)fp->f_data;
-		error = vn_fullpath(p, vp, &dat->fc_path.ptr, &dat->fc_path.buf, 1);
+		error = cache_fullpath(p, fp->f_nchandle, NULL, &dat->fc_path.ptr,
+			&dat->fc_path.buf, 1);
 		break;
 
 	default:
@@ -961,7 +960,7 @@ sys_fcntl(struct sysmsg *sysmsg, const struct fcntl_args *uap)
 			break;
 		case F_GETPATH:
 			error = copyout(dat.fc_path.ptr, (caddr_t)uap->arg,
-				MAXPATHLEN);
+				strlen(dat.fc_path.ptr) + 1);
 			kfree(dat.fc_path.buf, M_TEMP);
 			break;
 		}
