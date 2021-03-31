@@ -205,7 +205,7 @@ sys_varsym_get(struct sysmsg *sysmsg, const struct varsym_get_args *uap)
     } else if (uap->bufsize) {
 	copyout("", uap->buf, 1);
     }
-    sysmsg->sysmsg_result = dlen + 1;
+    sysmsg->sysmsg_result = 0;
     varsymdrop(sym);
 done:
 
